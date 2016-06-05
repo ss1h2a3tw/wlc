@@ -92,6 +92,7 @@ relayout(wlc_handle output)
 static void
 output_resolution(wlc_handle output, const struct wlc_size *from, const struct wlc_size *to)
 {
+   wlc_output_set_scale(output,2);
    (void)from, (void)to;
    relayout(output);
 }

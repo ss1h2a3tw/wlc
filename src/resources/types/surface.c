@@ -251,8 +251,9 @@ wl_cb_surface_set_buffer_scale(struct wl_client *client, struct wl_resource *res
       wl_resource_post_error(resource, WL_SURFACE_ERROR_INVALID_SCALE, "scale must be >= 0 (scale: %d)", scale);
       return;
    }
+   wlc_log(WLC_LOG_WARN, "Set scale 2222");
 
-   surface->pending.scale = 1;
+   surface->pending.scale = scale;
 }
 
 struct wlc_buffer*
