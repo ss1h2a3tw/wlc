@@ -309,6 +309,7 @@ wlc_xwayland_init(void)
              "-listen", strings[2],
              "-listen", strings[3],
              "-wm", strings[1],
+             //"-dpi","168",
              NULL);
       _exit(EXIT_FAILURE);
    } else if (xserver.pid < 0) {

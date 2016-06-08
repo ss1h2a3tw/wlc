@@ -88,13 +88,15 @@ output_push_to_resource(struct wlc_output *output, wlc_resource r)
                            output->information.transform);
 
    assert(output->information.scale > 0);
-   if (version >= WL_OUTPUT_SCALE_SINCE_VERSION)
+   //if (version >= WL_OUTPUT_SCALE_SINCE_VERSION)
+   wlc_log(WLC_LOG_WARN, "Send scale %u",output->information.scale);
       wl_output_send_scale(resource, output->information.scale);
 
    struct wlc_output_mode *mode;
    chck_iter_pool_for_each(&output->information.modes, mode) {
       const struct wlc_size r = (mode->flags & WL_OUTPUT_MODE_CURRENT ? output->resolution : (struct wlc_size){ mode->width, mode->height });
       wl_output_send_mode(resource, mode->flags, r.w, r.h, mode->refresh);
+      //wl_output_send_mode(resource, mode->flags, r.w/output->information.scale, r.h/output->information.scale, mode->refresh);
    }
 
    if (version >= WL_OUTPUT_DONE_SINCE_VERSION)
@@ -875,7 +877,6 @@ wlc_output_set_scale_ptr(struct wlc_output *output, int32_t scale)
       return false;
 
    assert(scale);
-
    wlc_log(WLC_LOG_WARN, "Set scale of output %" PRIuWLC "to %u", convert_to_wlc_handle(output), scale);
    output->information.scale=scale;
    return true;
