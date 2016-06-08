@@ -255,13 +255,34 @@ int
 main(void)
 {
    wlc_log_set_handler(cb_log);
-
+   //Callback function when changing resolution, the function will have three arguments
+   //wlc_handle output, wlc_size *from , wlc_size *to
    wlc_set_output_resolution_cb(output_resolution);
+   //wlc_view means a client surface
+   //bool(wlc_handle view) , return false if you wants to destroy it
    wlc_set_view_created_cb(view_created);
    wlc_set_view_destroyed_cb(view_destroyed);
    wlc_set_view_focus_cb(view_focus);
    wlc_set_view_request_move_cb(view_request_move);
    wlc_set_view_request_resize_cb(view_request_resize);
+   /** Request to set given geometry for view. Apply using wlc_view_set_geometry to agree. */
+   //We should start tracking from here
+   /** Fixed 2D point */
+   //struct wlc_point {
+   //   int32_t x, y;
+   //};
+
+   ///** Fixed 2D size */
+   //struct wlc_size {
+   //   uint32_t w, h;
+   //};
+
+   ///** Fixed 2D point, size pair */
+   //struct wlc_geometry {
+   //   struct wlc_point origin;
+   //   struct wlc_size size;
+   //};
+
    wlc_set_view_request_geometry_cb(view_request_geometry);
    wlc_set_keyboard_key_cb(keyboard_key);
    wlc_set_pointer_button_cb(pointer_button);
