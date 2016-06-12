@@ -78,12 +78,13 @@ relayout(wlc_handle output)
 
    size_t memb;
    const wlc_handle *views = wlc_output_get_views(output, &memb);
-
    bool toggle = false;
    uint32_t y = 0;
    uint32_t w = r->w / 2, h = r->h / chck_maxu32((1 + memb) / 2, 1);
+   w/=2;
+   h/=2;
    for (size_t i = 0; i < memb; ++i) {
-      struct wlc_geometry g = { { (toggle ? w : 0), y }, { (!toggle && i == memb - 1 ? r->w : w), h } };
+      struct wlc_geometry g = { { (toggle ? w : 0), y }, { (!toggle && i == memb - 1 ? r->w/2 : w), h } };
       wlc_view_set_geometry(views[i], 0, &g);
       y = y + (!(toggle = !toggle) ? h : 0);
    }
