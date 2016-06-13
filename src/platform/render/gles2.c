@@ -674,6 +674,7 @@ texture_paint(struct ctx *context, GLuint *textures, GLuint nmemb, const struct 
       GL_CALL(glBindTexture(GL_TEXTURE_2D, textures[i]));
 
       if (settings->filter || !wlc_size_equals(&context->resolution, &context->mode)) {
+          //GL_LINEAR means linear decide color of pixel
          GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
          GL_CALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
       } else {
@@ -693,7 +694,7 @@ surface_paint_internal(struct ctx *context, struct wlc_surface *surface, const s
    assert(context && surface && geometry && settings);
 
    const struct wlc_geometry *g = geometry;
-
+/*
    if (!wlc_size_equals(&surface->size, &geometry->size)) {
       if (wlc_geometry_equals(&settings->visible, geometry)) {
          settings->filter = true;
@@ -704,7 +705,7 @@ surface_paint_internal(struct ctx *context, struct wlc_surface *surface, const s
          texture_paint(context, &context->textures[TEXTURE_BLACK], 1, geometry, &settings2);
          g = &settings->visible;
       }
-   }
+   }*/
 
    texture_paint(context, surface->textures, 3, g, settings);
 }
@@ -734,6 +735,14 @@ view_paint(struct ctx *context, struct wlc_view *view)
 
    struct wlc_geometry geometry;
    wlc_view_get_bounds(view, &geometry, &settings.visible);
+   wlc_handle output = wlc_view_get_output(convert_to_wlc_handle(view));
+   
+   int32_t scale=wlc_output_get_scale(output);
+   wlc_log(WLC_LOG_WARN, "scale %u",scale);
+   geometry.origin.x*=scale;
+   geometry.origin.y*=scale;
+   geometry.size.w*=scale;
+   geometry.size.h*=scale;
    surface_paint_internal(context, surface, &geometry, &settings);
 
    if (DRAW_OPAQUE) {

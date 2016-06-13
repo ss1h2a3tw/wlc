@@ -892,6 +892,13 @@ wlc_output_set_scale(wlc_handle output, int32_t scale)
 {
    wlc_output_set_scale_ptr(convert_from_wlc_handle(output, "output"), scale);
 }
+WLC_API int32_t
+wlc_output_get_scale(wlc_handle output)
+{
+   struct wlc_output *o = convert_from_wlc_handle(output, "output");
+   assert(o);
+   return o->information.scale;
+}
 
 WLC_API bool
 wlc_output_get_sleep(wlc_handle output)
