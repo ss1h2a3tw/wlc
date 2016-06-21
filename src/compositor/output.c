@@ -901,6 +901,22 @@ wlc_output_get_scale(wlc_handle output)
 }
 
 WLC_API bool
+wlc_output_get_scaled_size(wlc_handle output, struct wlc_size *out_size)
+{
+   if (!out_size)
+      return false;
+
+   const struct wlc_size *resolution;
+   if (!(resolution = wlc_output_get_resolution(output)))
+      return false;
+
+   out_size->w = resolution->w / wlc_output_get_scale(output);
+   out_size->h = resolution->h / wlc_output_get_scale(output);
+
+   return true;
+}
+
+WLC_API bool
 wlc_output_get_sleep(wlc_handle output)
 {
    void *ptr = get(convert_from_wlc_handle(output, "output"), offsetof(struct wlc_output, state.sleeping));
