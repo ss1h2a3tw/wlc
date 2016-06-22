@@ -217,18 +217,16 @@ wlc_view_get_bounds(struct wlc_view *view, struct wlc_geometry *out_bounds, stru
    if (!out_visible)
       return;
 
-   struct wlc_size temp=surface->size;
-   temp.w /= scale;
-   temp.h /= scale;
-
    // Actual visible area of the view
    // The idea is to draw black borders to the bounds area, while centering the visible area.
-   if ((is_x11_view(view) || view->shell_surface) && !wlc_size_equals(&temp, &out_bounds->size)) {
+   if ((is_x11_view(view) || view->shell_surface) && !wlc_size_equals(&surface->size, &out_bounds->size)) {
       out_visible->size = surface->size;
 
       // Scale visible area retaining aspect
       struct wlc_size ssize;
       wlc_size_max(&surface->size, &(struct wlc_size){ 1, 1 }, &ssize);
+      ssize.w/=scale;
+      ssize.h/=scale;
       const float ba = (float)out_bounds->size.w / (float)out_bounds->size.h;
       const float sa = (float)ssize.w / (float)ssize.h;
       if (ba < sa) {
